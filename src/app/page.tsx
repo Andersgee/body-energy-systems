@@ -1,101 +1,73 @@
-import Image from "next/image";
+"use client";
+
+import { main, makeData, secondsFromPaceString } from "#src/lib/stuff";
+import { useState } from "react";
+import { Chart, Data } from "./compoents/chart";
+
+/*
+Array<
+    [
+      år: number,
+      veckonummer: number,
+      Kum_antal_avlidna: number,
+      Kum_antal_fall: number,
+      Kum_antal_intensivvårdade: number,
+      Kum_fall_100000inv: number
+    ]
+  >
+
+
+3:54 pace for 1.0km 	3min 45s
+4:06 pace for 1.3km 	5min 18s
+4:18 pace for 1.7km 	7min 30s
+4:30 pace for 2.4km 	10min 36s
+4:42 pace for 3.2km 	15min
+4:54 pace for 4.3km 	21min 12s
+5:06 pace for 5.9km 	30min
+5:18 pace for 8.0km 	42min 25s
+5:30 pace for 10.9km 	1h
+5:42 pace for 14.9km 	1h 24min 51s
+5:54 pace for 20.3km 	2h
+6:06 pace for 27.8km 	2h 49min 42s
+6:18 pace for 38.1km 	4h
+6:30 pace for 52.2km 	5h 39min 24s
+6:42 pace for 71.6km 	8h
+6:54 pace for 98.4km 	11h 18min 49s
+*/
+
+const threshold_pace = secondsFromPaceString("5:30");
+const threshold_time = 60 * 60;
 
 export default function Home() {
+  const [data, setData] = useState<Data>([
+    [2000, 1, 1, 2, 3, 1],
+    // [2000, 2, 1, 2, 3, 20],
+    // [2000, 3, 1, 2, 3, 3],
+    // [2000, 4, 1, 2, 3, 4],
+    // [2000, 5, 1, 2, 3, 5],
+    // [2000, 6, 1, 2, 3, 60],
+    // [2000, 7, 1, 2, 3, 7],
+    // [2000, 8, 1, 2, 3, 8],
+    // [2000, 9, 1, 2, 3, 9],
+    //[2011, 1, 1, 2, 3, 4],
+    //[2012, 1, 1, 2, 3, 4],
+  ]);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div className="container flex flex-col items-center px-2">
+      <button
+        onClick={() => {
+          //main(threshold_pace, threshold_time);
+          const items = makeData(threshold_pace, threshold_time);
+          setData(
+            items.map((item) => {
+              return [item[0], 1, 0, 0, item[1], item[2]];
+            })
+          );
+        }}
+      >
+        CLICK ME
+      </button>
+      <Chart data={data} />
     </div>
   );
 }
