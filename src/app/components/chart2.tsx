@@ -77,13 +77,16 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
     }
 
     const bounds = svgElement.getBoundingClientRect();
+
     const plottedWidth = bounds.width - margin.left - margin.right;
     const mouseX = clientX - bounds.left - margin.left;
 
     const fractionX = mouseX / plottedWidth;
 
-    let index = Math.round(fractionX * data.length);
+    let index = Math.round(fractionX * (data.length - 1));
     index = clamp(index, 0, data.length - 1);
+
+    console.log({ fractionX, index });
 
     const y = yScale(data[index].y);
     const x = xScale(data[index].x);
