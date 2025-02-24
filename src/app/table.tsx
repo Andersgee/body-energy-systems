@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { Input } from "./components/input";
-import { Chart2 } from "./components/chart2";
+import { Chart } from "./components/chart";
 
 const zPaceString = z
   .custom<string>((x) => {
@@ -104,13 +104,9 @@ export function Table() {
             </React.Fragment>
           ))}
         </div>
-
-        {/* 
-      <Chart data={data} />
-       */}
       </div>
       <div className="container mx-auto">
-        <Chart2
+        <Chart
           key={value}
           data={data.list.map((item) => ({
             x: item.pace,
