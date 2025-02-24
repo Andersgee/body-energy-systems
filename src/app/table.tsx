@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { Input } from "./components/input";
+import { Chart2 } from "./components/chart2";
 
 const zPaceString = z
   .custom<string>((x) => {
@@ -20,7 +21,7 @@ const zPaceString = z
       }
       const A = Number(a);
       const B = Number(b);
-      if (isFinite(A) && isFinite(B)) {
+      if (isFinite(A) && isFinite(B) && B < 60) {
         return true;
       }
 
@@ -106,6 +107,14 @@ export function Table() {
       {/* 
       <Chart data={data} />
        */}
+      <Chart2
+        key={value}
+        data={data.list.map((item) => ({
+          x: item.pace,
+          y: item.time,
+          info: { hello: `${item.dist}` },
+        }))}
+      />
     </div>
   );
 }
