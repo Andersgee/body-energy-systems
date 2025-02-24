@@ -60,53 +60,55 @@ export function Table() {
   }, [value]);
 
   return (
-    <div className="w-96 mx-auto">
-      <div className="py-4"></div>
-      <h1 className="font-semibold text-xl italic">Run like the wind</h1>
-      <div className="py-4"></div>
-
-      <div className="">
-        <div className="font-semibold">your threshold pace</div>
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          data-invalid={!!err}
-          placeholder="5:30"
-          className="w-auto"
-        />
-      </div>
-
-      <div className="py-4"></div>
-      <div className="font-semibold">your potenial, in numbers:</div>
-      <div className="py-4"></div>
-
-      <div className="grid grid-cols-3">
-        <div className="font-bold">distance</div>
-        <div className="font-bold">pace</div>
-        <div className="font-bold">time</div>
-        {data.fixedList.map((item, i) => (
-          <React.Fragment key={i}>
-            <div>{item.label}</div>
-            <div>{pacestringFromSeconds(item.pace)} </div>
-            <div>{timestringFromSeconds(item.time)}</div>
-          </React.Fragment>
-        ))}
+    <>
+      <div className="w-96 mx-auto">
         <div className="py-4"></div>
-        <div className="py-4"></div>
+        <h1 className="font-semibold text-xl italic">Run like the wind</h1>
         <div className="py-4"></div>
 
-        {data.list.map((item, i) => (
-          <React.Fragment key={i}>
-            <div>{kmStringFromDist(item.dist)}</div>
-            <div>{pacestringFromSeconds(item.pace)} </div>
-            <div>{timestringFromSeconds(item.time)}</div>
-          </React.Fragment>
-        ))}
-      </div>
+        <div className="">
+          <div className="font-semibold">your threshold pace</div>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            data-invalid={!!err}
+            placeholder="5:30"
+            className="w-auto"
+          />
+        </div>
 
-      {/* 
+        <div className="py-4"></div>
+        <div className="font-semibold">your potenial, in numbers:</div>
+        <div className="py-4"></div>
+
+        <div className="grid grid-cols-3">
+          <div className="font-bold">distance</div>
+          <div className="font-bold">pace</div>
+          <div className="font-bold">time</div>
+          {data.fixedList.map((item, i) => (
+            <React.Fragment key={i}>
+              <div>{item.label}</div>
+              <div>{pacestringFromSeconds(item.pace)} </div>
+              <div>{timestringFromSeconds(item.time)}</div>
+            </React.Fragment>
+          ))}
+          <div className="py-4"></div>
+          <div className="py-4"></div>
+          <div className="py-4"></div>
+
+          {data.list.map((item, i) => (
+            <React.Fragment key={i}>
+              <div>{kmStringFromDist(item.dist)}</div>
+              <div>{pacestringFromSeconds(item.pace)} </div>
+              <div>{timestringFromSeconds(item.time)}</div>
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* 
       <Chart data={data} />
        */}
+      </div>
       <Chart2
         key={value}
         data={data.list.map((item) => ({
@@ -115,6 +117,6 @@ export function Table() {
           info: { hello: `${item.dist}` },
         }))}
       />
-    </div>
+    </>
   );
 }

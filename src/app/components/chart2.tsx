@@ -40,7 +40,7 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
     top: 10,
     right: 10,
     bottom: 20,
-    left: 45,
+    left: 45 * 2,
   };
 
   const yDomain = d3.extent(data.map((item) => item.y)) as [number, number];
@@ -75,6 +75,7 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
     if (!svgElement || !tooltipElement) {
       return;
     }
+
     const bounds = svgElement.getBoundingClientRect();
     const plottedWidth = bounds.width - margin.left - margin.right;
     const mouseX = clientX - bounds.left - margin.left;
@@ -105,7 +106,7 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
         className={
           hoveredItem === null
             ? "invisible"
-            : "pointer-events-none absolute translate-x-[-50%] translate-y-[-105%] select-none rounded-sm bg-white p-2 text-black shadow-md w-40"
+            : "pointer-events-none absolute translate-x-[-50%] translate-y-[-105%] select-none rounded-sm bg-white p-2 text-black shadow-md w-44"
         }
       >
         {hoveredItem && (
@@ -179,10 +180,6 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
           strokeWidth="3"
           className="text-blue-500"
         />
-
-        {/* y.map((val, i) => {
-          return <circle key={i} r="2" cx={xPoints[i]} cy={yScale(val)} />;
-        }) */}
 
         {hoveredItem && (
           <circle
