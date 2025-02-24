@@ -109,14 +109,16 @@ export function Table() {
       <Chart data={data} />
        */}
       </div>
-      <Chart2
-        key={value}
-        data={data.list.map((item) => ({
-          x: item.pace,
-          y: item.time,
-          info: { hello: `${item.dist}` },
-        }))}
-      />
+      <div className="container mx-auto">
+        <Chart2
+          key={value}
+          data={data.list.map((item) => ({
+            x: item.pace,
+            y: item.time,
+            info: { hello: `${item.dist}` },
+          }))}
+        />
+      </div>
     </>
   );
 }
