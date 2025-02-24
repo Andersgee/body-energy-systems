@@ -12,6 +12,10 @@ export function pacestringFromSeconds(x: number) {
   return `${minutes}:${secondsString}`;
 }
 
+export function kmStringFromDist(dist: number) {
+  return `${dist.toFixed(1)}km`;
+}
+
 export function timestringFromSeconds(s: number) {
   const hh_mm_ss = new Date(Math.round(s * 1000)).toISOString().slice(11, 19);
   const v = hh_mm_ss.split(":");
@@ -158,9 +162,19 @@ export function main(threshold_pace: number, threshold_time = 3600) {
   }
 }
 
-type Items = Array<[pace: number, time: number, dist: number]>;
-export function makeData(threshold_pace: number, threshold_time = 3600): Items {
-  const r: Items = [];
+function yep(
+  label: string,
+  dist: number,
+  threshold_pace: number,
+  threshold_time: number
+) {
+  const { pace, time } = timePaceFromDist(dist, threshold_pace, threshold_time);
+  return { label, dist, pace, time };
+}
+
+type Item = { pace: number; time: number; dist: number };
+export function makeData(threshold_pace: number, threshold_time = 3600) {
+  const r: Item[] = [];
   const v = Array.from({ length: 16 }, (_, i) => i - 8);
   for (const i of v) {
     const s = i * 12;
@@ -171,10 +185,17 @@ export function makeData(threshold_pace: number, threshold_time = 3600): Items {
       threshold_pace,
       threshold_time
     );
-    r.push([pace, time, dist]);
+    r.push({ pace, time, dist });
   }
 
-  return r;
+  const fixedList = [
+    yep("5k", 5, threshold_pace, threshold_time),
+    yep("10k", 10, threshold_pace, threshold_time),
+    yep("halfmara", 21.0975, threshold_pace, threshold_time),
+    yep("marathon", 42.195, threshold_pace, threshold_time),
+  ];
+
+  return { list: r, fixedList };
 }
 
 //const threshold_pace = secondsFromPaceString("5:30");

@@ -13,6 +13,8 @@ import {
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 
+//TODO: generalize this copy pasted crap
+
 const KEYS = {
   år: 0,
   veckonummer: 1,
