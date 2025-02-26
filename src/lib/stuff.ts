@@ -122,11 +122,6 @@ function paceDistFromTime(
 ) {
   const pace = threshold_pace + paceDiffFromScale(time / threshold_time);
   const { dist } = timeDistFromPace(pace, threshold_pace, threshold_time);
-  console.log({
-    dist: kmStringFromDist(dist),
-    pace: pacestringFromSeconds(pace),
-    time: timestringFromSeconds(time),
-  });
   return { pace, dist };
 }
 
@@ -191,6 +186,30 @@ function maxPotentialByDist(
   return { label, dist, pace, time };
 }
 
+function workoutSuggestion(
+  label: string,
+  time: number,
+  /** 0..1 */
+  intensity: number,
+  threshold_pace: number,
+  threshold_time: number
+) {
+  //you could hold this pace for
+  const { pace } = paceDistFromTime(
+    time / intensity,
+    threshold_pace,
+    threshold_time
+  );
+  const dist = time / pace;
+
+  return {
+    label,
+    dist: kmStringFromDist(dist),
+    pace: pacestringFromSeconds(pace),
+    time: timestringFromSeconds(time),
+  };
+}
+
 type Item = { pace: number; time: number; dist: number };
 export function makeData(threshold_pace: number, threshold_time = 3600) {
   const r: Item[] = [];
@@ -214,12 +233,30 @@ export function makeData(threshold_pace: number, threshold_time = 3600) {
     maxPotentialByDist("marathon", 42.195, threshold_pace, threshold_time),
   ];
 
-  console.log("------------------------");
-  paceDistFromTime(60 * 3, threshold_pace, threshold_time);
-  paceDistFromTime(60 * 7 + 30, threshold_pace, threshold_time);
-  paceDistFromTime(60 * 60, threshold_pace, threshold_time);
-  paceDistFromTime(60 * 45, threshold_pace, threshold_time);
-
+  const suggestions = [
+    workoutSuggestion(
+      "3 min at 90% intensity",
+      60 * 3,
+      0.9,
+      threshold_pace,
+      threshold_time
+    ),
+    workoutSuggestion(
+      "7 min 30 sec at 50% intensity",
+      60 * 7 + 30,
+      0.5,
+      threshold_pace,
+      threshold_time
+    ),
+    workoutSuggestion(
+      "60 min at 50% intensity",
+      60 * 60,
+      0.5,
+      threshold_pace,
+      threshold_time
+    ),
+  ];
+  console.log(JSON.stringify(suggestions, null, 2));
   return { list: r, fixedList };
 }
 
