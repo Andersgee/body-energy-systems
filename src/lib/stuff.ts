@@ -72,9 +72,9 @@ function scaleFromPaceDiff(pace_diff: number, k = 24) {
  * 0.25 => -48
  * ```
  */
-//function paceDiffFromScale(scale:number, k = 24) {
-//  return Math.log2(scale) * k;
-//}
+function paceDiffFromScale(scale: number, k = 24) {
+  return Math.log2(scale) * k;
+}
 
 function timeDistFromPace(
   pace: number,
@@ -113,6 +113,21 @@ function timePaceFromDist(
   }
 
   return { time: prev_time, pace: prev_pace };
+}
+
+function paceDistFromTime(
+  time: number,
+  threshold_pace: number,
+  threshold_time: number
+) {
+  const pace = threshold_pace + paceDiffFromScale(time / threshold_time);
+  const { dist } = timeDistFromPace(pace, threshold_pace, threshold_time);
+  console.log({
+    dist: kmStringFromDist(dist),
+    pace: pacestringFromSeconds(pace),
+    time: timestringFromSeconds(time),
+  });
+  return { pace, dist };
 }
 
 function log_equivalent_by_dist(
@@ -166,7 +181,7 @@ export function main(threshold_pace: number, threshold_time = 3600) {
   }
 }
 
-function yep(
+function maxPotentialByDist(
   label: string,
   dist: number,
   threshold_pace: number,
@@ -193,11 +208,17 @@ export function makeData(threshold_pace: number, threshold_time = 3600) {
   }
 
   const fixedList = [
-    yep("5k", 5, threshold_pace, threshold_time),
-    yep("10k", 10, threshold_pace, threshold_time),
-    yep("halfmara", 21.0975, threshold_pace, threshold_time),
-    yep("marathon", 42.195, threshold_pace, threshold_time),
+    maxPotentialByDist("5k", 5, threshold_pace, threshold_time),
+    maxPotentialByDist("10k", 10, threshold_pace, threshold_time),
+    maxPotentialByDist("halfmara", 21.0975, threshold_pace, threshold_time),
+    maxPotentialByDist("marathon", 42.195, threshold_pace, threshold_time),
   ];
+
+  console.log("------------------------");
+  paceDistFromTime(60 * 3, threshold_pace, threshold_time);
+  paceDistFromTime(60 * 7 + 30, threshold_pace, threshold_time);
+  paceDistFromTime(60 * 60, threshold_pace, threshold_time);
+  paceDistFromTime(60 * 45, threshold_pace, threshold_time);
 
   return { list: r, fixedList };
 }
