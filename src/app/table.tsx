@@ -105,6 +105,32 @@ export function Table() {
           ))}
         </div>
       </div>
+      <div className="container mx-auto py-4">
+        <div>Suggestions</div>
+        {data.suggestions.map((item, i) => (
+          <div key={i} className="mt-4">
+            <div>{`${item.pace} pace for ${item.time} (${item.dist}).`}</div>
+            <div className="pl-8">
+              <span className="font-bold">{item.label}:</span>
+              {item.reps
+                ? `${item.reps} reps! Eech rep reflects ${item.intentity} of your potential (your PB would be holding that pace for ${item.pbTime}).`
+                : `This reflects ${item.intentity} of your potential (your PB would be holding that pace for ${item.pbTime}).`}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="container mx-auto">
+        <div>ISH VDOT Suggestions</div>
+        {data.ish_vdot_suggestions.map((item, i) => (
+          <div key={i} className="mt-4">
+            <div>{`${item.pace} pace for ${item.time} (${item.dist}).`}</div>
+            <div className="pl-8">
+              <span className="font-bold">{item.label}:</span>
+              {` This reflects ${item.intentity} of your potential (your PB would be holding that pace for ${item.pbTime}).`}
+            </div>
+          </div>
+        ))}
+      </div>
       <div className="container mx-auto">
         <Chart
           key={value}
