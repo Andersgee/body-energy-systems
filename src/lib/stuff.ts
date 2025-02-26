@@ -48,6 +48,8 @@ export function timestringFromSeconds(s: number) {
 
 /**
  * ```raw
+ * 48 sec slower pace => sustainable for 4x longer time
+ *
  * 48 => 4
  * 24 => 2
  * 0 => 1
@@ -61,6 +63,8 @@ function scaleFromPaceDiff(pace_diff: number, k = 24) {
 
 /**
  * ```raw
+ * 4x longer time => sustanable at 48 sec slower pace
+ *
  * 4 => 48
  * 2 => 24
  * 1 => 0
