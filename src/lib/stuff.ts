@@ -1,8 +1,7 @@
+const SPEED_DIFF_CONSTANT = 24;
+
 //so a value of 12 apparently produces almost identical values as the jackdaniels vdot calculator
 //const SPEED_DIFF_CONSTANT = 12;
-
-//but my times fit better with 24
-const SPEED_DIFF_CONSTANT = 24;
 
 export function secondsFromPaceString(str: string) {
   const [a, b] = str.split(":");
@@ -131,100 +130,78 @@ function paceDistFromTime(
   return { pace, dist };
 }
 
-function log_equivalent_by_dist(
-  label: string,
-  dist: number,
-  threshold_pace: number,
-  threshold_time: number
-) {
-  const { time, pace } = timePaceFromDist(dist, threshold_pace, threshold_time);
-
-  const paceSring = pacestringFromSeconds(pace);
-  const timeString = timestringFromSeconds(time);
-  console.log(`${paceSring} pace for ${label} \t ${timeString}`);
-}
-
-function log_equivalent_by_pace(
-  pace: number,
-  threshold_pace: number,
-  threshold_time: number
-) {
-  const { time, dist } = timeDistFromPace(pace, threshold_pace, threshold_time);
-
-  const pacestring = pacestringFromSeconds(pace);
-  const timeString = timestringFromSeconds(time);
-  console.log(`${pacestring} pace for ${dist.toFixed(1)}km \t${timeString}`);
-}
-
-export function main(threshold_pace: number, threshold_time = 3600) {
-  const input_string = `INPUT THRESHOLD PACE: ${pacestringFromSeconds(
-    threshold_pace
-  )} / km`;
-  const line = Array.from({ length: input_string.length }).fill("-").join("");
-  console.log(line);
-  console.log(input_string);
-  console.log(line);
-
-  console.log(`\you should be able to run at\n`);
-
-  log_equivalent_by_dist("5k", 5, threshold_pace, threshold_time);
-  log_equivalent_by_dist("10k", 10, threshold_pace, threshold_time);
-  log_equivalent_by_dist("halfmara", 21.0975, threshold_pace, threshold_time);
-  log_equivalent_by_dist("marathon", 42.195, threshold_pace, threshold_time);
-
-  console.log("\nThese are some other paces you could hold:\n");
-
-  const v = Array.from({ length: 16 }, (_, i) => i - 8);
-  for (const i of v) {
-    const s = i * 12;
-    const pace = threshold_pace + s; // seconds / km
-    log_equivalent_by_pace(pace, threshold_pace, threshold_time);
-  }
-}
-
-function maxPotentialByDist(
-  label: string,
+export function cardDistCalc(
   dist: number,
   threshold_pace: number,
   threshold_time: number
 ) {
   const { pace, time } = timePaceFromDist(dist, threshold_pace, threshold_time);
-  return { label, dist, pace, time };
+
+  return {
+    pace: pacestringFromSeconds(pace),
+    time: timestringFromSeconds(time),
+    dist: kmStringFromDist(dist),
+    //maxTimeAtPace: timestringFromSeconds(pbTime),
+    //maxDistAtPace: kmStringFromDist(pbDist),
+  };
 }
 
-function workoutSuggestionByTime(
-  label: string,
+export function cardTimeCalc(
+  time: number,
+  intensity: number,
+  threshold_pace: number,
+  threshold_time: number
+) {
+  const pbTime = time / intensity;
+  const { pace, dist: pbDist } = paceDistFromTime(
+    pbTime,
+    threshold_pace,
+    threshold_time
+  );
+  const dist = time / pace;
+
+  return {
+    pace: pacestringFromSeconds(pace),
+    time: timestringFromSeconds(time),
+    dist: kmStringFromDist(dist),
+    maxTimeAtPace: timestringFromSeconds(pbTime),
+    maxDistAtPace: kmStringFromDist(pbDist),
+  };
+}
+
+export function valuesFromTimeIntensity(
   time: number,
   /** 0..1 */
   intensity: number,
   threshold_pace: number,
-  threshold_time: number,
-  reps = 0
+  threshold_time: number
 ) {
   const pbTime = time / intensity;
-  //you could hold this pace for
   const { pace } = paceDistFromTime(pbTime, threshold_pace, threshold_time);
   const dist = time / pace;
 
   return {
-    label,
     dist: kmStringFromDist(dist),
     pace: pacestringFromSeconds(pace),
     time: timestringFromSeconds(time),
     intentity: `${intensity * 100}%`,
     pbTime: timestringFromSeconds(pbTime),
-    reps,
+    description: `${pacestringFromSeconds(pace)} for ${timestringFromSeconds(
+      time
+    )} (${kmStringFromDist(
+      dist
+    )}). You could in fact hold that pace for ${timestringFromSeconds(pbTime)}`,
   };
 }
 
 type Item = { pace: number; time: number; dist: number };
 export function makeData(threshold_pace: number, threshold_time = 3600) {
   const r: Item[] = [];
-  const v = Array.from({ length: 16 }, (_, i) => i - 8);
+  const v = Array.from({ length: 64 * 2 * 2 }, (_, i) => i);
   for (const i of v) {
-    const s = i * (0.5 * SPEED_DIFF_CONSTANT);
-    const pace = threshold_pace + s; // seconds / km
-    //log_equivalent_by_pace(pace, threshold_pace, threshold_time);
+    const diff = i - v.length * 0.5;
+    const pace = threshold_pace + diff; // seconds / km
+
     const { time, dist } = timeDistFromPace(
       pace,
       threshold_pace,
@@ -232,74 +209,5 @@ export function makeData(threshold_pace: number, threshold_time = 3600) {
     );
     r.push({ pace, time, dist });
   }
-
-  const fixedList = [
-    maxPotentialByDist("5k", 5, threshold_pace, threshold_time),
-    maxPotentialByDist("10k", 10, threshold_pace, threshold_time),
-    maxPotentialByDist("halfmara", 21.0975, threshold_pace, threshold_time),
-    maxPotentialByDist("marathon", 42.195, threshold_pace, threshold_time),
-  ];
-
-  const ish_vdot_suggestions = [
-    workoutSuggestionByTime(
-      "Easy",
-      60 * 45,
-      0.1,
-      threshold_pace,
-      threshold_time
-    ),
-    workoutSuggestionByTime(
-      "Marathon",
-      60 * 90,
-      0.7,
-      threshold_pace,
-      threshold_time
-    ),
-    workoutSuggestionByTime(
-      "Threshold",
-      60 * 20,
-      0.35,
-      threshold_pace,
-      threshold_time
-    ),
-    workoutSuggestionByTime(
-      "Interval (5x3min = 15 min totalt, 2 min vila mellan)",
-      60 * 15,
-      0.6,
-      threshold_pace,
-      threshold_time
-    ),
-
-    workoutSuggestionByTime(
-      "Repetition (4x1min = 4 min totalt, 1 min vila mellan)",
-      60 * 4,
-      0.6,
-      threshold_pace,
-      threshold_time
-    ),
-  ];
-
-  const suggestions = [
-    workoutSuggestionByTime(
-      "VO2max",
-      60 * 3,
-      0.8,
-      threshold_pace,
-      threshold_time,
-      3
-    ),
-    workoutSuggestionByTime(
-      "Threshold",
-      60 * 60,
-      0.8,
-      threshold_pace,
-      threshold_time
-    ),
-  ];
-
-  return { list: r, fixedList, ish_vdot_suggestions, suggestions };
+  return r;
 }
-
-//const threshold_pace = secondsFromPaceString("5:30");
-//const threshold_time = 60 * 60;
-//main(threshold_pace, threshold_time);

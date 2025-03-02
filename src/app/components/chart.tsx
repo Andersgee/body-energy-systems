@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import useMeasure from "react-use-measure";
 
-type Item = { x: number; y: number; info: { hello: string } };
+type Item = { x: number; y: number; info: { dist: number } };
 type Data = Item[];
 
 type Props = {
@@ -56,7 +56,7 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
     .range([margin.left, width - margin.right]);
 
   const yTicks = yScale.ticks(5);
-  const xTicks = xScale.ticks(data.length / 2);
+  const xTicks = xScale.ticks(5);
 
   const scaledData = data.map(
     (item) => [xScale(item.x), yScale(item.y)] as [number, number]
@@ -114,9 +114,10 @@ function ChartInner({ data, width, height }: ChartInnerProps) {
       >
         {hoveredItem && (
           <div className="">
-            <div>pace: {pacestringFromSeconds(hoveredItem.x)}</div>
-            <div>time: {timestringFromSeconds(hoveredItem.y)}</div>
-            <div>dist: {kmStringFromDist(+hoveredItem.info.hello)}</div>
+            <div>{`${pacestringFromSeconds(hoveredItem.x)} min/km`}</div>
+            <div>sustainable for max</div>
+            <div>{`${timestringFromSeconds(hoveredItem.y)}`}</div>
+            <div>{`(${kmStringFromDist(hoveredItem.info.dist)})`}</div>
           </div>
         )}
       </div>
