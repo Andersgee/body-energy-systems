@@ -49,6 +49,7 @@ export default function Page() {
                     data-invalid={!!zPaceString.safeParse(value).error}
                     placeholder="5:30"
                     className="w-auto"
+                    //inputMode="numeric"
                   />
                 </div>
                 <div>
@@ -123,6 +124,7 @@ function CustomCardTime({ threshold_pace }: { threshold_pace: string }) {
             data-invalid={!!zTimeString.safeParse(timeString).error}
             placeholder="60"
             className="w-auto"
+            inputMode="numeric"
           />
           <div>effort in percent</div>
           <Input
@@ -131,6 +133,7 @@ function CustomCardTime({ threshold_pace }: { threshold_pace: string }) {
             data-invalid={!!zIntensityString.safeParse(intensityString).error}
             placeholder="10"
             className="w-auto"
+            inputMode="numeric"
           />
         </div>
         <CardTime
