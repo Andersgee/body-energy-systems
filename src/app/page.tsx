@@ -9,7 +9,7 @@ import { CardDist } from "./card-dist";
 import { zIntensityString, zPaceString, zTimeString } from "../lib/validators";
 
 const DEFAULT_THRESHOLD_TIME = 60 * 60;
-const DEFAULT_THRESHOLD_PACE = "5:30";
+const DEFAULT_THRESHOLD_PACE = "5:15";
 
 const EXAMPLES = [
   { percent: 10, minutes: 45, label: "Easy" },
@@ -42,15 +42,19 @@ export default function Page() {
             <div className="flex justify-center">
               <div className="space-y-4">
                 <div className="">
-                  <div>your threshold pace</div>
-                  <Input
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    data-invalid={!!zPaceString.safeParse(value).error}
-                    placeholder="5:30"
-                    className="w-auto"
-                    //inputMode="numeric"
-                  />
+                  <div>Your threshold pace </div>
+                  <div className="flex gap-1 items-baseline">
+                    <Input
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      data-invalid={!!zPaceString.safeParse(value).error}
+                      placeholder={DEFAULT_THRESHOLD_PACE}
+                      className="w-auto"
+                      autoFocus
+                      //inputMode="numeric"
+                    />
+                    <div>min / km</div>
+                  </div>
                 </div>
                 <div>
                   <h2 className="">Max effort equivalents</h2>
