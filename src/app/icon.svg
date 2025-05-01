@@ -1,5 +1,7 @@
 <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-<title>Andyfx Logo</title>
-<path fill="none" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke="#E3001B" d="M 18 102 L 39 40 L 75 90 L 102 18"></path>
-<path fill="none" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" stroke="#A4D1F3" d="M 18 102 L 102 18"></path>
+<g transform="translate(17,13) scale(1.5,1.5)">
+<path 
+d="M41 37.5C36.5 32 33.5 24.5 32.5 17C21 17.5 18.5 5.5 17.5 3C16.5 0.499999 2 11 2 17.5C2 24 9.5 28 15 35.5C20.5 43 29 54 34 54.5C39 55 53.5 54.5 53.5 49.5C53.5 44.5 45.5 43 41 37.5Z" 
+stroke="#1d4ed8" fill="#93c5fd" stroke-width="6"/>
+</g>
 </svg>
