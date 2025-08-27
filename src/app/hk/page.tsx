@@ -29,7 +29,7 @@ export default function Page() {
           </li>
           <li>
             <Span>13k-17k</Span>
-            {` längs kusten "flat"`}
+            {` längs kusten "flat" (station1 @ 15k)`}
           </li>
           <li>
             <Span>17k-21k</Span>
@@ -42,7 +42,7 @@ export default function Page() {
           </li>
           <li>
             <Span>24k-31k</Span>
-            {` "trail" 100asc, 100desc ish`}
+            {` "trail" 100asc, 100desc ish (station2 @ 26k)`}
           </li>
           <li>
             <Span>31k-32k</Span>
@@ -58,7 +58,7 @@ export default function Page() {
           </li>
           <li>
             <Span>37k-39k</Span>
-            {` "uphill only" 250asc till "skuleberg-toppen"`}
+            {` "uphill only" 250asc till "skuleberg-toppen" (station3 @ 38k)`}
           </li>
           <li>
             <Span>39k-42k</Span>
