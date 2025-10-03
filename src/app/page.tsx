@@ -7,6 +7,7 @@ import { Chart } from "./components/chart";
 import { CardTime } from "./card-time";
 import { CardDist } from "./card-dist";
 import { zIntensityString, zPaceString, zTimeString } from "../lib/validators";
+import Link from "next/link";
 
 const DEFAULT_THRESHOLD_TIME = 60 * 60;
 const DEFAULT_THRESHOLD_PACE = "5:15";
@@ -109,6 +110,14 @@ export default function Page() {
         Note: adjust your threshold pace until the max effort equivalents looks
         reasonable to you personally. All values shown are based on that input
         field.
+      </div>
+      <div className="flex justify-center gap-4 my-2">
+        <Link className="p-2" href="/">
+          effort
+        </Link>
+        <Link className="p-2" href="/track">
+          track
+        </Link>
       </div>
     </div>
   );

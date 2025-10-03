@@ -4,6 +4,7 @@ import { Input } from "../components/input";
 import { Fragment, useMemo, useState } from "react";
 import { z } from "zod";
 import { cn } from "#src/utils/cn";
+import Link from "next/link";
 
 const LANES: { number: number; meters: number }[] = [
   { number: 1, meters: 400.0 },
@@ -16,7 +17,7 @@ const LANES: { number: number; meters: number }[] = [
   { number: 8, meters: 453.7 },
 ];
 
-export const zDistanceString = z
+const zDistanceString = z
   .custom<string>((x) => {
     try {
       const n = Number(x);
@@ -90,37 +91,50 @@ export default function Page() {
   }, [value]);
 
   return (
-    <div className="space-y-4 mx-4 my-4">
-      <h1 className="text-balance">
-        Calculate number of laps required for distance
-      </h1>
-      <div className="flex gap-1 items-baseline">
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          data-invalid={!!zDistanceString.safeParse(value).error}
-          placeholder={DEFAULT_DISTANCE}
-          className="w-auto"
-          autoFocus
-          inputMode="numeric"
-        />
-        <div>meters</div>
+    <div className="flex flex-col justify-between min-h-dvh">
+      <div className="space-y-4 mx-4 my-4">
+        <h1 className="text-balance">
+          Calculate number of laps required for distance
+        </h1>
+        <div className="flex gap-1 items-baseline">
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            data-invalid={!!zDistanceString.safeParse(value).error}
+            placeholder={DEFAULT_DISTANCE}
+            className="w-auto"
+            autoFocus
+            inputMode="numeric"
+          />
+          <div>meters</div>
+        </div>
+        <div className="grid grid-cols-[50px_200px_200px]">
+          <div>Lane</div>
+          <div>Laps (rounded down)</div>
+          <div>Laps (rounded up)</div>
+          {data?.l.map((lane, i) => (
+            <Fragment key={lane.number}>
+              <div>{`${lane.number}`}</div>
+              <div
+                className={cn(i === data.lowMindiffIndex && "font-bold")}
+              >{`${lane.low.laps} (${lane.low.meters.toFixed(0)}m)`}</div>
+              <div
+                className={cn(i === data.highMindiffIndex && "font-bold")}
+              >{`${lane.high.laps} (${lane.high.meters.toFixed(0)}m)`}</div>
+            </Fragment>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-[50px_200px_200px]">
-        <div>Lane</div>
-        <div>Laps (rounded down)</div>
-        <div>Laps (rounded up)</div>
-        {data?.l.map((lane, i) => (
-          <Fragment key={lane.number}>
-            <div>{`${lane.number}`}</div>
-            <div className={cn(i === data.lowMindiffIndex && "font-bold")}>{`${
-              lane.low.laps
-            } (${lane.low.meters.toFixed(0)}m)`}</div>
-            <div className={cn(i === data.highMindiffIndex && "font-bold")}>{`${
-              lane.high.laps
-            } (${lane.high.meters.toFixed(0)}m)`}</div>
-          </Fragment>
-        ))}
+      <div
+        className="flex justify-center gap-4 my-2
+        "
+      >
+        <Link className="p-2" href="/">
+          effort
+        </Link>
+        <Link className="p-2" href="/track">
+          track
+        </Link>
       </div>
     </div>
   );
